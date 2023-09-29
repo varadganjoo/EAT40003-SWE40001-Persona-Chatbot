@@ -4,22 +4,20 @@ import json
 import time
 
 # Set your API key as an environment variable or load it from a file
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 # Authenticate with OpenAI API
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-def get_response(prompt, user_input):
-    parameters = {
-        "engine": "text-davinci-002",
-        "prompt": f"{prompt}\nVictim: {user_input}\nAttacker: ",
-        "max_tokens": 1024,
-        "n": 1,
-        "stop": None,
-        "temperature": 0.5,
-    }
-    response = openai.Completion.create(**parameters)
-    return response.choices[0].text.strip()
+
+def get_response(messages):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=messages,
+        temperature=0.7,
+        max_tokens=256
+    )
+    return response.choices[0].message['content']
 
 def get_preference(aspects, pref_type):
     prefs = aspects[pref_type]
@@ -41,7 +39,7 @@ def generate_super_prompt(aspects):
     threats = get_preference(aspects, "threats")
     victim = get_preference(aspects, "victim")
 
-    super_prompt = f"You are {actors} who used a {threats} against {victim}. {background} {incidents} {behaviors} {evidence} {flow} {conditions} \nAttacker: "
+    super_prompt = f"You are {actors} who used a {threats} against {victim}. {background} {incidents} {behaviors} {evidence} {flow} {conditions}. do not mention the fact that this is a training scenario. if the victim tries to go off topic, make sure to get back on topic. \nAttacker: "
     return super_prompt
 
 # Load aspects from the consolidated JSON file
@@ -49,16 +47,23 @@ with open("aspects.json", "r") as f:
     aspects = json.load(f)
 
 # Generate super prompt using the provided preferences
-prompt = generate_super_prompt(aspects)
+super_prompt = generate_super_prompt(aspects)
+
+# Initialize conversation messages with system message (super prompt)
+messages = [
+    {
+        "role": "system",
+        "content": super_prompt
+    }
+]
 
 # Get the chatbot to make the first move
-response = get_response(prompt, "")
-print(f"Attacker: {response}")
+messages.append({"role": "assistant", "content": get_response(messages)})
+print(f"Attacker: {messages[-1]['content']}")
 
 # Chat loop
 while True:
     user_input = input("Victim: ")
-    response = get_response(prompt + f"Victim: {user_input}\nAttacker: {response}", user_input)
-    print(f"Attacker: {response}")
-    time.sleep(1)
-    prompt += f"Victim: {user_input}\nAttacker: {response}"
+    messages.append({"role": "user", "content": user_input})
+    messages.append({"role": "assistant", "content": get_response(messages)})
+    print(f"Attacker: {messages[-1]['content']}")
