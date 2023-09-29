@@ -16,7 +16,7 @@
     },
     {
       "name": "International Conflict",
-      "description": "This scenario unfolds in a world marred by geopolitical tensions and international conflicts, where cyber warfare becomes a powerful tool for nations to compromise each other’s security, infrastructure, and sensitive information, with far-reaching consequences on global stability."
+      "description": "This scenario unfolds in a world marred by geopolitical tensions and international conflicts, where cyber warfare becomes a powerful tool for nations to compromise each otherï¿½s security, infrastructure, and sensitive information, with far-reaching consequences on global stability."
     }
   ],
   "behaviors": [
@@ -46,7 +46,7 @@
     },
     {
       "name": "Inquiry to Revelation",
-      "description": "Initiate the conversation with inquiries and probing, gradually unveiling the critical information or evidence as the dialogue progresses. Maintain a coherent and logical flow, revealing details in a calculated manner based on the user’s responses and reactions."
+      "description": "Initiate the conversation with inquiries and probing, gradually unveiling the critical information or evidence as the dialogue progresses. Maintain a coherent and logical flow, revealing details in a calculated manner based on the userï¿½s responses and reactions."
     }
   ],
   "evidence": [

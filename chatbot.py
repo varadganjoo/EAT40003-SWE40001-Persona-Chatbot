@@ -4,7 +4,7 @@ import json
 import time
 
 # Set your API key as an environment variable or load it from a file
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 # Authenticate with OpenAI API
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -51,10 +51,14 @@ with open("aspects.json", "r") as f:
 # Generate super prompt using the provided preferences
 prompt = generate_super_prompt(aspects)
 
+# Get the chatbot to make the first move
+response = get_response(prompt, "")
+print(f"Attacker: {response}")
+
 # Chat loop
 while True:
     user_input = input("Victim: ")
-    response = get_response(prompt, user_input)
+    response = get_response(prompt + f"Victim: {user_input}\nAttacker: {response}", user_input)
     print(f"Attacker: {response}")
     time.sleep(1)
     prompt += f"Victim: {user_input}\nAttacker: {response}"
