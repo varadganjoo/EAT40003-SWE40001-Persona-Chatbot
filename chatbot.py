@@ -7,7 +7,7 @@ def read_content_from_file(filename="content.txt"):
 
 def openai_chatbot():
     # Set OpenAI API key
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = "YOUR_API_KEY"
     openai.api_key = os.getenv("OPENAI_API_KEY")
     
     # Initial setup
